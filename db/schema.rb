@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190301164714) do
+ActiveRecord::Schema.define(version: 20190302204827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -186,6 +186,17 @@ ActiveRecord::Schema.define(version: 20190301164714) do
     t.index ["unlock_token"], name: "index_fae_users_on_unlock_token", unique: true, using: :btree
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string   "title"
+    t.string   "description"
+    t.decimal  "price"
+    t.text     "observations"
+    t.integer  "supplier_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["supplier_id"], name: "index_products_on_supplier_id", using: :btree
+  end
+
   create_table "sells", force: :cascade do |t|
     t.decimal  "total"
     t.integer  "discount_id"
@@ -217,6 +228,7 @@ ActiveRecord::Schema.define(version: 20190301164714) do
     t.datetime "updated_at",   null: false
   end
 
+  add_foreign_key "products", "suppliers"
   add_foreign_key "sells", "clients"
   add_foreign_key "sells", "discounts"
 end
